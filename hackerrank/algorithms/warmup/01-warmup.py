@@ -20,7 +20,7 @@ def solve(a0, a1, a2, b0, b1, b2):
         elif alice < bob:
             score['bob'] += 1
 
-    return score['alice'], score['bob']]
+    return score['alice'], score['bob']
 
 
 def aVeryBigSum(n, ar):
