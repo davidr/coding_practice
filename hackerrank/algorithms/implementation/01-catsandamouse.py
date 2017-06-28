@@ -36,9 +36,12 @@ for a0 in range(q):
     elif loc['Mouse C'] >= loc[right_cat]:
         print(right_cat)
     else:
-        if abs(loc['Mouse C'] - loc[left_cat]) == abs(loc['Mouse C'] - loc[right_cat]):
+        left_cat_tomouse  = abs(loc['Mouse C'] - loc[left_cat])
+        right_cat_tomouse = abs(loc['Mouse C'] - loc[right_cat])
+
+        if left_cat_tomouse == right_cat_tomouse:
             print("Mouse C")
-        elif
-
-
-
+        elif left_cat_tomouse < right_cat_tomouse:
+            print(left_cat)
+        elif left_cat_tomouse > right_cat_tomouse:
+            print(right_cat)
