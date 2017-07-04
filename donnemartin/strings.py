@@ -45,17 +45,77 @@ def is_rotation(str1, str2):
 
 def compress(s):
     """Return compressed (aaabccdddd = a3bc2d4) string if it saves space"""
-    from collections import Counter
+    def _format_compress(char, count):
+        string = char
+        if count > 1:
+            string += '{:d}'.format(count)
+
+        return string
 
     if not s:
         return
 
 
+    # set initial state
+    char_count = 0
     last_char = s[0]
-    for i in s:
-        if i == last_char:
+    s_compress = ''
 
-            pass
+    for char in s:
+        if char == last_char:
+            # More of the same character. Increment counter and move on.
+            char_count += 1
+        else:
+            # new_character
+            s_compress += _format_compress(last_char, char_count)
+            last_char = char
+            char_count = 1
 
+    # Take care of whatever string is last
+    s_compress += _format_compress(last_char, char_count)
 
+    if len(s_compress) < len(s):
+        return s_compress
+    else:
+        return "".join(s)
 
+def reverse(s):
+    """Reverse chars in place, i.e. not cheating and using s[::-1]"""
+
+    s = list(s)
+    i = 0
+    j = len(s) - 1
+
+    while i < j:
+        s[i], s[j] = s[j], s[i]
+        i += 1
+        j -= 1
+
+    return "".join(s)
+
+def find_diff(s, t):
+    """Find the character in t that is not in s"""
+    s = set(s)
+    t = set(t)
+
+    return list(set.difference(t, s))[0]
+
+def two_sum(nums, val):
+    """Find the indices of nums for two numbers that sum to val. There will always
+    be exactly one solution."""
+
+    # We could make a matrix of the combinations of elements, and then traverse
+    # the upper triangle, but that's slow. If we just run through the list, store
+    # val - nums[i] in a hash table, and then look up each new integer in the hash
+    # table, etc. we should be okay
+
+    seen_complements = {}
+
+    for i, num in enumerate(nums):
+        complement = val - num
+
+        if num in seen_complements:
+            return [seen_complements[num], i]
+
+        else:
+            seen_complements[complement] = i
