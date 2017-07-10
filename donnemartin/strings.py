@@ -119,3 +119,26 @@ def two_sum(nums, val):
 
         else:
             seen_complements[complement] = i
+
+def fizzbuzz(num):
+    if type(num) != int or num < 1:
+        raise Exception
+
+    print_newline = False
+    for i in range(1, num +1):
+        print(i)
+        if i % 3 == 0:
+            print('Fizz', end='')
+            print_newline = True
+        if i % 5 == 0:
+            print('Buzz', end='')
+            print_newline = True
+
+        if print_newline:
+            print('')
+        print_newline = False
+
+
+
+
+
