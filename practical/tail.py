@@ -56,5 +56,53 @@ def byline_runningbuffer_tail(filename, lines):
             print(line, end="")
 
 
+def fromend_tail(filename, lines):
+    bufsize = 100
+
+    tailbuf = ''
+
+    with open(filename, 'r') as f_input:
+        # Seek to end of file
+        f_input.seek(0, 2)
+
+        num_lines_inbuf = 0
+        while f_input.tell() - bufsize > 0:
+
+            # back the pointer up by 100 and read 100
+            f_input.seek(f_input.tell() - bufsize)
+            readbuf = f_input.read(bufsize)
+
+            i = len(readbuf) - 1
+            while i >= 0:
+                if readbuf[i] == '\n':
+                    print("line!, {:d}".format(i))
+                    num_lines_inbuf += 1
+
+                    if num_lines_inbuf == lines:
+                        # We've got all we need!
+                        tailbuf = readbuf[i+1:] + tailbuf
+                        break
+
+                i -= 1
+
+            if num_lines_inbuf == lines:
+                break
+
+            # We've reached the beginning of the buffer and haven't seen enough
+            # newlines yet
+            tailbuf = readbuf + tailbuf
+
+            # Seek back
+            f_input.seek(f_input.tell() - bufsize)
+
+        print("S")
+        print(tailbuf, end='')
+        print("E")
+
+
+
+
+
+
 if __name__ == "__main__":
     main()
