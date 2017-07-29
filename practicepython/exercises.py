@@ -76,7 +76,13 @@ def fibonacci_norecurse(n):
 
         return(fibonacci)
 
+def parse_subdb():
+    with open('sundb.txt') as f_sundb:
+        for line in f_sundb:
+            line_split = line.split(sep='/')
+            print(line_split)
+
 
 if __name__ == "__main__":
-    print(fibonacci_norecurse(7))
+    print(parse_subdb())
 
