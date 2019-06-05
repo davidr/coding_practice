@@ -1,5 +1,6 @@
 from typing import List, Iterator
 
+
 def is_prime(n: int) -> bool:
     """return True if n is prime, else False
 
@@ -22,6 +23,48 @@ def is_prime(n: int) -> bool:
             return False
 
     return True
+
+
+def primes_between(a: int, b: int) -> List[int]:
+    if a > b:
+        raise ValueError("a > b")
+
+    primes = []
+
+    for x in range(a, b + 1):
+        if is_prime(x):
+            primes.append(x)
+
+    return primes
+
+
+def gcd(a: int, b: int) -> int:
+    """greatest common divisor 
+    
+    Args:
+        a (int)
+        b (int)
+    
+    Returns:
+        int: gcd of a, b
+    """
+    while b > 0:
+        a, b = b, a % b
+    return a
+
+
+def lcm(a: int, b: int) -> int:
+    """least common multiple
+    
+    Args:
+        a (int): a
+        b (int): b
+    
+    Returns:
+        int: least common multiple of a, b
+    """
+
+    return (a * b) // gcd(a, b)
 
 
 def prime_factors(n: int) -> List[int]:
@@ -61,4 +104,3 @@ def is_palindromic(n: int) -> bool:
 
 def n_digit_numbers(n: int) -> Iterator[int]:
     return range(10 ** (n - 1), 10 ** n)
-
