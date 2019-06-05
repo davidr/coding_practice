@@ -103,4 +103,34 @@ def is_palindromic(n: int) -> bool:
 
 
 def n_digit_numbers(n: int) -> Iterator[int]:
+    """return an iterator of all the numbers with n digits
+    
+    Args:
+        n (int): number of digits
+    
+    Returns:
+        Iterator[int]
+    """
     return range(10 ** (n - 1), 10 ** n)
+
+def square_of_sums(nums: Iterator[int]) -> int:
+    """square of sums
+    
+    Args:
+        nums (Iterator[int]): iterator of integers
+    
+    Returns:
+        int
+    """
+    return sum(nums)**2
+
+def sum_of_squares(nums: Iterator[int]) -> int:
+    """sum of squares
+    
+    Args:
+        nums (Iterator[int]): iterator of integers
+    
+    Returns:
+        int
+    """
+    return sum(map(lambda x: x**2, nums))
