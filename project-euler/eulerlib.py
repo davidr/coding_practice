@@ -1,8 +1,39 @@
 from typing import List, Iterator
+from math import sqrt
+
+primes_below_100 = [
+    2,
+    3,
+    5,
+    7,
+    11,
+    13,
+    17,
+    19,
+    23,
+    29,
+    31,
+    37,
+    41,
+    43,
+    47,
+    53,
+    59,
+    61,
+    67,
+    71,
+    73,
+    79,
+    83,
+    89,
+    97,
+]
 
 
-def is_prime(n: int) -> bool:
+def is_prime_v1(n: int) -> bool:
     """return True if n is prime, else False
+
+    DEPRECATED
 
     Args:
         n (int): input
@@ -18,24 +49,105 @@ def is_prime(n: int) -> bool:
     elif n % 2 == 0:
         return False
 
-    for i in range(3, n, 2):
+    # We only need to check odd numbers, and we can stop once we get to sqrt(n)
+    for i in range(3, int(sqrt(n)) + 1, 2):
         if n % i == 0:
             return False
 
     return True
 
 
-def primes_between(a: int, b: int) -> List[int]:
+def is_prime_v2(n: int) -> bool:
+    """is n prime
+
+    implementing the 6k +/- 1 optimization
+    
+    Args:
+        n (int): number to check
+    
+    Returns:
+        bool: True if n is prime, else False
+    """
+    if n == 1:
+        return False
+    elif n in (2, 3):
+        return True
+    elif n % 2 == 0 or n % 3 == 0:
+        return False
+
+    # quick check to use tiny precomputed list of primes weed out lots of nonprimes:
+    for p in primes_below_100:
+        if n % p == 0:
+            return False
+
+    for i in range(101, int(sqrt(n)) + 1, 6):
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+    return True
+
+
+# This and the next function boosted from rosettacode
+def _try_composite(a, d, n, s):
+    if pow(a, d, n) == 1:
+        return False
+    for i in range(s):
+        if pow(a, 2 ** i * d, n) == n - 1:
+            return False
+    return True  # n  is definitely composite
+
+
+def is_prime_miller_rabin(n, _precision_for_huge_n=16):
+    if n in primes_below_100:
+        return True
+    if any((n % p) == 0 for p in primes_below_100) or n in (0, 1):
+        return False
+    d, s = n - 1, 0
+    while not d % 2:
+        d, s = d >> 1, s + 1
+    # Returns exact according to http://primes.utm.edu/prove/prove2_3.html
+    if n < 1373653:
+        return not any(_try_composite(a, d, n, s) for a in (2, 3))
+    if n < 25326001:
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5))
+    if n < 118670087467:
+        if n == 3215031751:
+            return False
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7))
+    if n < 2152302898747:
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11))
+    if n < 3474749660383:
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13))
+    if n < 341550071728321:
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17))
+    # otherwise
+    return not any(
+        _try_composite(a, d, n, s) for a in primes_below_200[:_precision_for_huge_n]
+    )
+
+
+def is_prime(n):
+    return is_prime_v2(n)
+
+
+def primes_between(a: int, b: int) -> Iterator[int]:
+    """primes between a and b, inclusive
+    
+    Args:
+        a (int): lower bound
+        b (int): upper_bound
+    
+    Raises:
+        ValueError: a > b
+    
+    Yields:
+        int: next prime between a and b
+    """
     if a > b:
         raise ValueError("a > b")
 
-    primes = []
-
     for x in range(a, b + 1):
         if is_prime(x):
-            primes.append(x)
-
-    return primes
+            yield x
 
 
 def gcd(a: int, b: int) -> int:
@@ -113,6 +225,7 @@ def n_digit_numbers(n: int) -> Iterator[int]:
     """
     return range(10 ** (n - 1), 10 ** n)
 
+
 def square_of_sums(nums: Iterator[int]) -> int:
     """square of sums
     
@@ -122,7 +235,8 @@ def square_of_sums(nums: Iterator[int]) -> int:
     Returns:
         int
     """
-    return sum(nums)**2
+    return sum(nums) ** 2
+
 
 def sum_of_squares(nums: Iterator[int]) -> int:
     """sum of squares
@@ -133,4 +247,5 @@ def sum_of_squares(nums: Iterator[int]) -> int:
     Returns:
         int
     """
-    return sum(map(lambda x: x**2, nums))
+    return sum(map(lambda x: x ** 2, nums))
+
