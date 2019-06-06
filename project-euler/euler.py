@@ -2,6 +2,7 @@
 
 from importlib import import_module
 from timeit import default_timer as timer
+from timeit import Timer
 import sys
 import argparse
 
@@ -34,7 +35,14 @@ def main():
     result = euler_problem.compute(*int_args)
     elapsed_time = timer() - start
 
-    print(f"{result}\t\t(in {elapsed_time:0.2f}s)")
+    if elapsed_time < 2:
+        num_calls = int(2 // elapsed_time)
+        start = timer()
+        for x in range(0, num_calls):
+            euler_problem.compute(*int_args)
+        elapsed_time = (timer() - start) / num_calls
+
+    print(f"{result}\t\t(in {elapsed_time:0.3f}s)")
 
 
 if __name__ == "__main__":
