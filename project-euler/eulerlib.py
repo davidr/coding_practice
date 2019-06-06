@@ -199,6 +199,33 @@ def prime_factors(n: int) -> List[int]:
     return factors
 
 
+def factors(n: int) -> List[int]:
+    """factors of n
+    
+    Args:
+        n (int): number to factorisze
+    
+    Returns:
+        List[int]: list of factors of n
+    """
+
+    factors = [1]
+    test_to = n
+    for i in range(2, int(n // 2) + 1):
+        if i >= test_to:
+            break
+
+        if n % i == 0:
+            # i is a factor of n which means that n/i is also a factor
+            factors.append(i)
+            factors.append(n // i)
+            test_to = n // i
+
+    # don't forget n!
+    factors.append(n)
+    return factors
+
+
 def is_palindromic(n: int) -> bool:
     str_n = str(n)
     len_n = len(str_n)
@@ -249,3 +276,20 @@ def sum_of_squares(nums: Iterator[int]) -> int:
     """
     return sum(map(lambda x: x ** 2, nums))
 
+
+def triangle_numbers() -> int:
+    """generate the nth triangle number
+    
+    Args:
+        n (int)
+    
+    Yields:
+        int
+    """
+
+    triangle_number = 0
+    num = 1
+    while True:
+        triangle_number += num
+        yield triangle_number
+        num += 1
