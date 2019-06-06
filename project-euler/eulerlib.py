@@ -293,3 +293,25 @@ def triangle_numbers() -> int:
         triangle_number += num
         yield triangle_number
         num += 1
+
+
+collatz_cache = {}
+def collatz_sequence(starting_number: int, cache: bool = False) -> List[int]:
+    sequence = [starting_number]
+
+    n = starting_number
+    while n != 1:
+        if cache:
+            if n in collatz_cache:
+                return sequence + collatz_cache[n][1:]
+
+        if n % 2 == 0:
+            n = n // 2
+        else:
+            n = 3*n + 1
+
+        sequence.append(n)
+
+    if cache:
+        collatz_cache[starting_number] = sequence
+    return sequence
