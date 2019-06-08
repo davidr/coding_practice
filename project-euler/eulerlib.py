@@ -296,6 +296,8 @@ def triangle_numbers() -> int:
 
 
 collatz_cache = {}
+
+
 def collatz_sequence(starting_number: int, cache: bool = False) -> List[int]:
     sequence = [starting_number]
 
@@ -308,10 +310,59 @@ def collatz_sequence(starting_number: int, cache: bool = False) -> List[int]:
         if n % 2 == 0:
             n = n // 2
         else:
-            n = 3*n + 1
+            n = 3 * n + 1
 
         sequence.append(n)
 
     if cache:
         collatz_cache[starting_number] = sequence
     return sequence
+
+
+# fmt: off
+_number_strings_by_one = [
+    "zero",    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
+    "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
+
+_number_strings_by_ten = [
+    None, "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
+]
+# fmt: on
+
+
+def number_to_english(n: int) -> str:
+    """given nonnegative integer n, return a string of n written out in english
+    
+    Args:
+        n (int): some integer
+
+    Raises:
+        ValueError: if we don't go up to the number requested
+    
+    Returns:
+        str
+    """
+
+    if 0 <= n < 20:
+        return _number_strings_by_one[n]
+    elif n < 100:
+        ones = n % 10
+        tens = (n - ones) // 10
+        return _number_strings_by_ten[tens] + (
+            "-" + number_to_english(ones) if ones != 0 else ""
+        )
+    elif n < 1000:
+        tens = n % 100
+        hundreds = (n - tens) // 100
+        return _number_strings_by_one[hundreds] + " hundred" + (
+            " and " + number_to_english(tens) if tens != 0 else ""
+        )
+    elif n < 1_000_000:
+        hundreds = n % 1000
+        thousands = (n - hundreds) // 1000
+        return number_to_english(thousands) + " thousand" + (
+            " and " + number_to_english(hundreds) if hundreds != 0 else ""
+        )
+
+    raise ValueError("we don't go up that high")
+
