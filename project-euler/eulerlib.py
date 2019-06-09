@@ -208,7 +208,20 @@ def factors(n: int, count_self=True) -> List[int]:
     
     Returns:
         List[int]: list of factors of n
+
+    Returns:
+        [type]: [description]
     """
+
+    # shortcut some small factors so we don't have to add logic into the computation below
+    if n == 1:
+        return [1]
+    elif n == 2:
+        return [1] + ([2] if count_self == True else [])
+    elif n == 3:
+        return [1] + ([3] if count_self == True else [])
+    elif n == 4:
+        return [1, 2] + ([4] if count_self == True else [])
 
     factors = [1]
     test_to = n
