@@ -199,11 +199,12 @@ def prime_factors(n: int) -> List[int]:
     return factors
 
 
-def factors(n: int) -> List[int]:
+def factors(n: int, count_self=True) -> List[int]:
     """factors of n
     
     Args:
         n (int): number to factorisze
+        count_self (bool): count self in factors? Defaults to True
     
     Returns:
         List[int]: list of factors of n
@@ -221,8 +222,8 @@ def factors(n: int) -> List[int]:
             factors.append(n // i)
             test_to = n // i
 
-    # don't forget n!
-    factors.append(n)
+    if count_self:
+        factors.append(n)
     return factors
 
 
@@ -366,3 +367,23 @@ def number_to_english(n: int) -> str:
 
     raise ValueError("we don't go up that high")
 
+
+def ordinal_value_ofletter(letter: str) -> int:
+    """return the ordinal value of the letter a
+
+    ex: ordinal_value_ofletter(a) = 1, b = 2...
+    
+    Args:
+        letter (str): a letter of the alphabet
+
+    Raises:
+        ValueError: if a is not a single letter
+    
+    Returns:
+        int: ordinal value of a
+    """
+
+    if len(letter) > 1 or not letter.isalpha():
+        raise ValueError(f"{letter} must be a single letter")
+
+    return 1 + ord(letter.lower()) - ord('a')
