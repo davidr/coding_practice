@@ -32,14 +32,20 @@ def test_4(n: int) -> None:
     for i in range(n):
         print(i**2)
 
+def is_leap(year):
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            return False
+        return True
+    return False
 
-# test_5
-""" davidr - going to bed
-def test_5() -> None:
-    def is_leap(year):
+def print_one_to_n(n: int):
+    for i in range(1,n+1):
+        print(i, end='')
+    print('\n')
 
-    return is_leep
-"""
 
 if __name__ == "__main__":
     from sys import argv
